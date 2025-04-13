@@ -15,3 +15,6 @@ After parsing the cookie header, cookie-parser fills (populates) req.cookies wit
 Loads environment variables from a .env file into process.env.
 
 =>req.params takes data from the request's URL — specifically from dynamic segments in the route.
+
+=> The spread operator (...) is copying all key-value pairs inside req.fields.
+
