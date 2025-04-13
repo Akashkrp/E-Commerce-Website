@@ -1,0 +1,20 @@
+=> process.env is an object in Node.js that stores environment variables.
+
+=> Parsing cookies means:
+Turning raw cookie strings into usable JavaScript objects
+So you can easily access them in your code (req.cookies)
+
+=> When we say:
+“cookie-parser populates req.cookies”
+
+We mean:
+Originally, req.cookies is undefined or empty.
+After parsing the cookie header, cookie-parser fills (populates) req.cookies with a JS object.
+
+=> dotenv.config(); 
+Loads environment variables from a .env file into process.env.
+
+=>req.params takes data from the request's URL — specifically from dynamic segments in the route.
+
+=> The spread operator (...) is copying all key-value pairs inside req.fields.
+
