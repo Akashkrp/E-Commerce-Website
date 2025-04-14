@@ -1,15 +1,18 @@
-import { useState } from 'react'
+import { Outlet } from "react-router-dom";
+import Navigation from "./pages/Auth/Navigation"; 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
     <>
-      <div className='bg-blue-500 text-white text-center p-4 rounded-md'>
-        Tailwind CSS is working! 🎉
-      </div>
+      <ToastContainer />
+      <Navigation />
+      <main className="py-3">
+        <Outlet />
+      </main>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

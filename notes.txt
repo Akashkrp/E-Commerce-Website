@@ -18,3 +18,5 @@ Loads environment variables from a .env file into process.env.
 
 => The spread operator (...) is copying all key-value pairs inside req.fields.
 
+=> we can write self close tags if they dont have any content
+

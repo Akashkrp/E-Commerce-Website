@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
-a.active {
-  color: #4a5568;
-  text-decoration: underline;
+body {
+  background: #0f0f10;
+  color: #fff;
+}
+
+input,
+textarea {
+  color: #fff;
 }
