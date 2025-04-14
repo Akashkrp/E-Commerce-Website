@@ -1,87 +1,84 @@
-import categoryModel from "../models/categoryModel.js";
-import asyncHandler from '../middlewares/asyncHandler.js'
+import Category from "../models/categoryModel.js";
+import asyncHandler from "../middlewares/asyncHandler.js";
 
-const createCategory = asyncHandler(async (req,res) => {
-    try {
-        const {name} = req.body;
+const createCategory=asyncHandler(async (req,res)=>{
+    try{
+        const {name}=req.body
+        // console.log(name);
+
         if(!name){
-            return res.json({error: "Name is required"})
+            return res.json({error:"Name is required"})
+        }
+        const existingCategory = await Category.findOne({ name });
+
+        if (existingCategory) {
+        return res.json({ error: "Already exists" });
         }
 
-        const existingCategory = await categoryModel.findOne({name});
-        if(existingCategory){
-            return res.json({error: "Already Exists"});
+        const category = await new Category({ name }).save();
+            res.json(category);
+        } catch (error) {
+            console.log(error);
+            return res.status(400).json(error);
+        }
+        
+    
+    });
+
+const updateCategory=asyncHandler(async (req,res)=>{
+    try {
+        const{ name}=req.body;
+        const {categoryId}=req.params;
+
+        const category=await Category.findOne({_id:categoryId})
+
+        if(!category){
+            return res.status(400).json({error:"Category not found"})
         }
 
-        const category = await new Category({name}).save()
-        res.json(category);
+        category.name=name
+
+        const updatedCategory=await category.save()
+
+        res.json(updatedCategory)
 
 
 
     } catch (error) {
         console.log(error);
-        return res.status(400).json(error)
+        res.status(500),json({error:"Internal servor error"})
+        
     }
 })
 
-const updateCategory = asyncHandler(async (req, res)=> {
+const deleteCategory=asyncHandler(async (req,res)=>{
     try {
-        const {name} = req.body;
-        const {categoryID} = req.params
-
-        const category = await Category.findOne({_id: categoryID})
-
-        if(!category){
-            return res.status(404).json({error: "category not found"})
-        }
-
-        category.name = name
-
-        const updatedCategory = await category.save();
-        res.json(updatedCategory)
-
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({error:"Internal server Error"})
-    }
-})
-
-const removeCategory = asyncHandler(async(req,res)=>{
-    try {
-        const removed = await Category.findByIdAndRemove(req.params.categoryID)
+        const removed=await Category.findByIdAndDelete(req.params.categoryId)
         res.json(removed)
-
     } catch (error) {
-        console.error(error)
-        res.status(500).json({error:"Internal server Error"})
+        console.log(error);
+        res.status(500),json({error:"Internal servor error"})
     }
 })
 
-const listCategory = asyncHandler(async(req,res)=>{
+const listCategory=asyncHandler(async(req,res)=>{
     try {
-        const all = await Category.find({})
-        res.json(all);
-
+        const all=await Category.find({})
+        res.json(all)
     } catch (error) {
-        console.error(error)
-        return res.status(400).json(error.message);
+        console.log(error);
+        return res.status(400).json(error.message)
+        
     }
 })
 
-const readCategory = asyncHandler(async(req,res)=>{
+const readCategory=asyncHandler(async(req,res)=>{
     try {
-        const category = await Category.findOne({_id: req.params.id})
-        res.json(category);
-
+        const category=await Category.findOne({_id:req.params.id})
+        res.json(category)
     } catch (error) {
-        console.error(error)
-        return res.status(400).json(error.message);
+        console.log(error);
+        return res.status(400).json(error.message)
     }
 })
-export {
-    createCategory,
-    updateCategory,
-    removeCategory,
-    listCategory,
-    readCategory,
-};
+export {createCategory,updateCategory,deleteCategory,listCategory,readCategory}
