@@ -122,3 +122,28 @@ const Profile = () => {
 
 
 export default Profile;
+
+
+/*
+useSelector is used to access user state 
+or
+useSelector is used to access (or "read") data from the Redux store in your component.
+
+
+useSelector(...) returns the auth slice of the Redux state (whatever is inside state.auth).
+{ userInfo } = ... destructures the userInfo property out of the auth slice. const { userInfo } = ... creates a new constant variable named userInfo in your component scope.
+
+the first element of the array returned by useProfileMutation() is the function to call when you want to perform the mutation (i.e., updateProfile). updateProfile is a function
+
+Concept	Meaning
+unwrap() => Extracts pure response data from RTK mutation call and throws error if any
+Why use it?	To use try/catch cleanly and get just the useful data (not wrapped in RTK metadata)
+
+LN 114
+When the user submits their form to update their profile, loadingUpdateProfile becomes true while the profile update is being processed.
+
+As long as loadingUpdateProfile is true, the <Loader /> component is rendered, which typically means a loading spinner.
+
+A mutation is a request that changes data (in this case, updates the profile).
+
+*/

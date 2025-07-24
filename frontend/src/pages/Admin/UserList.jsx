@@ -9,7 +9,7 @@ import {
 } from "../../redux/api/usersApiSlice";
 import { toast } from "react-toastify";
 // ⚠️⚠️⚠️ don't forget this ⚠️⚠️⚠️⚠️
-// import AdminMenu from "./AdminMenu";
+import AdminMenu from "./AdminMenu";
 
 const UserList = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -172,3 +172,20 @@ const UserList = () => {
 };
 
 export default UserList;
+
+
+/*
+LN 15
+rename data to users and here we are destructuring 
+
+{} is used to destructure objects
+[] is used to destructure arrays
+
+LN 63
+we have written if-else here in a way, this way is called ternary operator
+
+LN 88-115
+If the current user is being edited, show input box.
+Otherwise show name and edit button.
+next we have same logic for email
+*/

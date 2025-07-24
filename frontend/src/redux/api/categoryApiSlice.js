@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { CATEGORY_URL } from "../constant";
+import { CATEGORY_URL } from "../constants";
 
 export const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -38,3 +38,10 @@ export const {
   useDeleteCategoryMutation,
   useFetchCategoriesQuery,
 } = categoryApiSlice;
+
+
+/*
+=> this file is used to define API endpoints just likethe user one and utilised the apiSlice file for that
+
+=> the auth one is diff as it is used to store the current state and handle login and logout functions
+*/

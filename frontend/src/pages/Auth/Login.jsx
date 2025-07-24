@@ -114,3 +114,37 @@ const Login = () => {
 };
 
 export default Login;
+
+
+/*
+Link is a component used to navigate between different routes in a React application. It's similar to an anchor (<a>) tag in HTML but designed specifically for client-side routing in React
+<Link to="/profile">Go to Profile</Link>
+
+useLocation is a hook that provides information about the current location (URL) in the app. It returns an object with details about the current URL, including the pathname, search (query parameters), and hash.
+
+useNavigate is a hook that gives you access to a navigate function, which allows for programmatic navigation in response to events or conditions. It’s used when you want to navigate to a different route based on logic (like after form submission, login, etc.).
+navigate("/profile")
+
+LN 13 and 14
+dispatch is used to dispatch actions to the Redux store (e.g., updating user credentials).
+navigate is used for programmatic navigation to other pages (e.g., after a successful login).
+
+useSelector is a hook provided by react-redux. It allows a React component to access the Redux store and read the current state.
+
+For eg:- https://example.com/login?redirect=/dashboard
+then search would be: "?redirect=/dashboard"
+
+LN 21
+You pass the search string (like "?redirect=/dashboard") into URLSearchParams, which turns it into an object you can use to extract individual query parameters.
+
+LN 88
+The button text changes to "Signing In..." when isLoading is true, otherwise, it says "Sign In".
+
+LN 98
+This JSX line creates a React Router link (using <Link /> from react-router-dom) that navigates the user to the registration page.
+
+But here’s the twist:
+If there's a redirect value already present (like /dashboard), it adds that as a query parameter so that after registration, the user can be redirected there.
+THAT'S SMART NOWW!!
+
+*/

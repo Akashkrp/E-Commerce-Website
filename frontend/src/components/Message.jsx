@@ -14,3 +14,9 @@ const Message = ({ variant, children }) => {
   };
   
   export default Message;
+
+
+
+  // variant and children are just variables we could have passed apples and oranges as well
+
+  

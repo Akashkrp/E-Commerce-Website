@@ -16,3 +16,5 @@ const App = () => {
 };
 
 export default App;
+
+// this file acts like the "frame" for your entire app. It wraps every page with a navbar and toast support.

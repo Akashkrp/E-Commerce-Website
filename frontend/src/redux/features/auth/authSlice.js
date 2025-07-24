@@ -24,6 +24,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.userInfo = action.payload;
       localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      //above we updated the state and the local storage
 
       const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days
       localStorage.setItem("expirationTime", expirationTime);
@@ -38,3 +39,12 @@ const authSlice = createSlice({
 export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;
+
+/*
+It manages the login/logout state of the user in your app using Redux Toolkit.
+
+In Redux Toolkit, initialState is simply the starting value of your slice of state — just like default values in a form or variable.
+
+Redux needs to know:
+What the state looks like when the app first starts
+*/

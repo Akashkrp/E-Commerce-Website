@@ -20,3 +20,10 @@ const Modal = ({ isOpen, onClose, children }) => {
   };
   
   export default Modal;
+
+
+
+  // LN-4
+  // In {isOpen && ( ... )} if isOpen is true then modal UI( ... ) is rendered
+
+  // If isOpen is true, React renders what's after the &&

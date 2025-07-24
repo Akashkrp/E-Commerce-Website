@@ -1,3 +1,5 @@
+=>In React, we write HTML-like code (called JSX) inside JavaScript functions (called components).
+
 => process.env is an object in Node.js that stores environment variables.
 
 => Parsing cookies means:
@@ -20,3 +22,75 @@ Loads environment variables from a .env file into process.env.
 
 => we can write self close tags if they dont have any content
 
+=> return () starts the return of JSX (HTML-like structure for rendering the UI).
+
+=> Tumhara frontend (React app) ek backend server ke endpoint par HTTP request bhejta hai — aur woh "API call" hoti hai.
+
+Chhoti baat mein:
+"API call" = Kisi backend server ko kaam karne ke liye bolna (via request).
+Chahe login ho, register ho, data fetch ho — sab API calls hain.
+
+=> The unwrap() method helps you directly access the actual data returned from an API call and avoid unnecessary metadata.
+
+=> In the context of Redux Toolkit Query (RTK Query):
+
+Query = Fetching data (e.g., getUser, getPosts)
+Mutation = Changing data (e.g., registerUser, login, updateProfile, deletePost)
+
+A mutation is used for operations that "mutate" (change) the backend — like registering a user.
+
+Redux is a state manager for JavaScript apps — especially useful with React.
+
+"You're asking a waiter (API) to get your order from the kitchen (server). The waiter sends an HTTP request to the kitchen."
+
+Every API call (on the web) uses an HTTP request under the hood.
+But not every HTTP request is necessarily considered an "API call" (it could be loading an image or file too).
+
+
+Term	 In Your Code	         What it Means
+
+Actions	 setCredentials,logout	 The commands that tell Redux what to do
+
+Reducer	 authSlice.reducer	     The function that updates the state
+
+
+=>1. HTTP Request (Broader Concept)
+An HTTP request is any request sent from a client (like a browser or app) to a server using the HTTP protocol.
+
+It includes GET, POST, PUT, DELETE, etc.
+
+ 2. API Request (Specific Type of HTTP Request)
+An API request is a specific kind of HTTP request made to an API endpoint.
+
+It’s used to send or receive structured data (usually JSON) instead of full web pages.
+
+API requests are usually made by programs (frontend JavaScript, mobile apps, etc.), not by humans in browsers.
+
+
+=>In Redux, there are two main types of files when working with Redux Toolkit:
+
+ 1. Redux Slices — For storing data in app state
+These files use createSlice() and are used to:
+
+Store data (like user info, cart items, dark mode status)
+
+Change that data using reducers
+
+2. RTK Query API Slices — For fetching/updating data (not storing it)
+These files use createApi() and builder.query or builder.mutation and are used to:
+
+Make HTTP requests to your backend (GET, POST, PUT, DELETE)
+
+Automatically manage caching, loading, and error states
+
+A reducer is a pure function that:
+
+🎯 Takes the current state and an action, and returns the new state.
+
+It's the core of Redux logic — it defines how your app's state changes when actions are dispatched.
+
+=>Files like usersApiSlice.js, productsApiSlice.js, and categoryApiSlice.js in your Redux api/ folder are specifically used to define API endpoints
+
+can we say the Api Slice fiels links the frontend to the backend by provididng the same api endpoint
+
+so a fxn(hook) is called in the frintend fie and it goes to the ApiSlice nd sees that there is and enpoint for me and then it matches same endpoint in the routes defined in the backend code adn then uses the logic in controller to process the request?

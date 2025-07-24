@@ -154,3 +154,15 @@ const Register = () => {
 };
 
 export default Register;
+
+
+/*
+LN 21
+userInfo contains the details of the currently logged in user if there is any
+
+The unwrap() method helps you directly access the actual data returned from an API call and avoid unnecessary metadata.
+
+value={password}:
+This makes the input field controlled, meaning its value is tied to the React state password. As the user types, the value of the input field will be reflected in the password state. how does this help
+
+*/

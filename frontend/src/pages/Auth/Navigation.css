@@ -34,3 +34,18 @@
   display: none;
   transition: opacity 0.2s ease-in-out; /* Add opacity transition */
 }
+
+
+
+/*
+It creates a collapsible sidebar or navigation bar that:
+
+Starts off small (4% width).
+
+On hover, it expands (to 15% width) and reveals hidden content like:
+
+Navigation item names (.nav-item-name)
+A search input box (.search-input)
+And hides the search icon (.search-icon)
+
+*/
