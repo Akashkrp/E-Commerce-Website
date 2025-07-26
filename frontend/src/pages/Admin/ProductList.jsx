@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateProductMutation,
-  useUploadProductImageMutation,
+  // useUploadProductImageMutation,
 } from "../../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ const ProductList = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
-  const [uploadProductImage] = useUploadProductImageMutation();
+  // const [uploadProductImage] = useUploadProductImageMutation();
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
 
@@ -33,37 +33,32 @@ const ProductList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const productData = new FormData();
-      Object.entries(form).forEach(([key, val]) =>
-        productData.append(key, val)
-      );
-      productData.append("image", image);
 
-      const { data } = await createProduct(productData);
-      if (data.error) {
-        toast.error("Product create failed. Try Again.");
-      } else {
-        toast.success(`${data.name} is created`);
-        navigate("/");
-      }
+    const productData = new FormData();
+
+    // Append all fields
+    Object.entries(form).forEach(([key, val]) => {
+      productData.append(key, val);
+    });
+
+    // Append the image file
+    productData.append("image", image);
+
+    try {
+      const data = await createProduct(productData).unwrap();
+      toast.success(`${data.name} is created`);
+      navigate("/");
     } catch (error) {
       console.error(error);
-      toast.error("Product create failed. Try Again.");
+      toast.error(error?.data?.error || "Product creation failed.");
     }
   };
 
-  const uploadFileHandler = async (e) => {
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
-    try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setImage(res.image);
-      setImageUrl(res.image);
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
-    }
+
+  const uploadFileHandler = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setImageUrl(URL.createObjectURL(file));
   };
 
   return (

@@ -2,33 +2,32 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import Product from "../models/productModel.js";
 
 const addProduct = asyncHandler(async (req, res) => {
-  try {
-    const { name, description, price, category, quantity, brand } = req.fields;
+  const { name, description, price, category, quantity, brand } = req.fields;
+  const { image } = req.files;
 
-    // Validation
-    switch (true) {
-      case !name:
-        return res.json({ error: "Name is required" });
-      case !brand:
-        return res.json({ error: "Brand is required" });
-      case !description:
-        return res.json({ error: "Description is required" });
-      case !price:
-        return res.json({ error: "Price is required" });
-      case !category:
-        return res.json({ error: "Category is required" });
-      case !quantity:
-        return res.json({ error: "Quantity is required" });
-    }
-
-    const product = new Product({ ...req.fields });
-    await product.save();
-    res.json(product);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json(error.message);
+  if (!name || !description || !price || !category || !quantity || !brand) {
+    return res.status(400).json({ error: "All fields are required" });
   }
+
+  if (!image) {
+    return res.status(400).json({ error: "Image is required" });
+  }
+
+  // Save the file locally or upload to cloud and get path
+  const product = new Product({
+    name,
+    description,
+    price,
+    category,
+    quantity,
+    brand,
+    image: image.path, // or upload and use public URL
+  });
+
+  await product.save();
+  res.status(201).json(product);
 });
+
 
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
