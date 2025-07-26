@@ -2,152 +2,183 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateProductMutation,
-  // useUploadProductImageMutation,
+  useUploadProductImageMutation,
 } from "../../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
 
 const ProductList = () => {
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    quantity: "",
-    brand: "",
-    countInStock: "",
-  });
   const [image, setImage] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [brand, setBrand] = useState("");
+  const [stock, setStock] = useState(0);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
-  // const [uploadProductImage] = useUploadProductImageMutation();
+  const [uploadProductImage] = useUploadProductImageMutation();
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const productData = new FormData();
-
-    // Append all fields
-    Object.entries(form).forEach(([key, val]) => {
-      productData.append(key, val);
-    });
-
-    // Append the image file
-    productData.append("image", image);
-
     try {
-      const data = await createProduct(productData).unwrap();
-      toast.success(`${data.name} is created`);
-      navigate("/");
+      const productData = new FormData();
+      productData.append("image", image);
+      productData.append("name", name);
+      productData.append("description", description);
+      productData.append("price", price);
+      productData.append("category", category);
+      productData.append("quantity", quantity);
+      productData.append("brand", brand);
+      productData.append("countInStock", stock);
+
+      const { data } = await createProduct(productData);
+
+      if (data.error) {
+        toast.error("Product create failed. Try Again.");
+      } else {
+        toast.success(`${data.name} is created`);
+        navigate("/");
+      }
     } catch (error) {
       console.error(error);
-      toast.error(error?.data?.error || "Product creation failed.");
+      toast.error("Product create failed. Try Again.");
     }
   };
 
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
 
-  const uploadFileHandler = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setImageUrl(URL.createObjectURL(file));
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImage(res.image);
+      setImageUrl(res.image);
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
+    }
   };
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
       <div className="flex flex-col md:flex-row">
-        <AdminMenu/>
+        <AdminMenu />
         <div className="md:w-3/4 p-3">
-          <h2 className="text-2xl font-bold mb-4 text-white">Create Product</h2>
+          <div className="h-12">Create Product</div>
 
           {imageUrl && (
-            <div className="text-center mb-4">
+            <div className="text-center">
               <img
                 src={imageUrl}
                 alt="product"
-                className="block mx-auto max-h-[200px] rounded-md"
+                className="block mx-auto max-h-[200px]"
               />
             </div>
           )}
 
-          <div className="mb-5">
-            <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-10 bg-[#101011]">
+          <div className="mb-3">
+            <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
               {image ? image.name : "Upload Image"}
+
               <input
                 type="file"
                 name="image"
                 accept="image/*"
                 onChange={uploadFileHandler}
-                className="hidden"
+                className={!image ? "hidden" : "text-white"}
               />
             </label>
           </div>
 
-          <div className="space-y-5">
-            {[
-              ["name", "text"],
-              ["price", "number"],
-              ["quantity", "number"],
-              ["brand", "text"],
-              ["countInStock", "number"],
-            ].map(([field, type]) => (
-              <div key={field}>
-                <label htmlFor={field} className="block text-white capitalize">
-                  {field}
-                </label>
+          <div className="p-3">
+            <div className="flex flex-wrap">
+              <div className="one">
+                <label htmlFor="name">Name</label> <br />
                 <input
-                  type={type}
-                  name={field}
-                  value={form[field]}
-                  onChange={handleChange}
-                  className="p-4 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  type="text"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
-            ))}
-
-            <div>
-              <label htmlFor="description" className="block text-white mb-1">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows="4"
-                className="p-4 w-full border rounded-lg bg-[#101011] text-white"
-              ></textarea>
+              <div className="two ml-10 ">
+                <label htmlFor="name block">Price</label> <br />
+                <input
+                  type="number"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap">
+              <div className="one">
+                <label htmlFor="name block">Quantity</label> <br />
+                <input
+                  type="number"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                />
+              </div>
+              <div className="two ml-10 ">
+                <label htmlFor="name block">Brand</label> <br />
+                <input
+                  type="text"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="category" className="block text-white">
-                Category
-              </label>
-              <select
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="p-4 w-[30rem] border rounded-lg bg-[#101011] text-white"
-              >
-                <option value="">Select a category</option>
-                {categories?.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+            <label htmlFor="" className="my-5">
+              Description
+            </label>
+            <textarea
+              type="text"
+              className="p-2 mb-3 bg-[#101011] border rounded-lg w-[95%] text-white"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+
+            <div className="flex justify-between">
+              <div>
+                <label htmlFor="name block">Count In Stock</label> <br />
+                <input
+                  type="text"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="">Category</label> <br />
+                <select
+                  placeholder="Choose Category"
+                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  {categories?.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <button
               onClick={handleSubmit}
-              className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600 text-white"
+              className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600"
             >
               Submit
             </button>
